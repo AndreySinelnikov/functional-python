@@ -1,0 +1,44 @@
+def my_add(x, y):
+    return x + y
+
+def my_subtract(x, y):
+    return x - y
+
+def my_reduce(function, iterable):
+    """Последовательное применение функции function, принимающей два аргумента,
+       к паре "аккумулятор" (изначально первый элемент итерируемого объекта iterable)
+       / следующий элемент итерируемого объекта. На каждом шаге результат вызова функции
+       сохраняется в аккумуляторе.
+       Элементы, скорее всего, должны быть одинакового типа.
+       Функция reduce из модуля functools чуточку навороченнее, но идея та же."""
+
+    # в аккумуляторе сохраняется значение первого элемента 
+    acc = iterable[0]  
+
+    # если элементов больше одного, начинается магия
+    for i in range(1, len(iterable)):
+        print(f"Вызывается функция {function.__name__} с аргументами {acc}, {iterable[i]}")
+        acc = function(acc, iterable[i])
+        print(f"Результат: {acc}")
+
+    # возврат итогового значения из аккумулятора
+    return acc
+    
+int_tuple = (1, 2, 3, 4)
+
+# последовательное суммирование элементов int_tuple (равносильно sum(int_tuple))
+print(my_reduce(my_add, int_tuple))
+print()
+
+# а теперь последовательное вычитание элементов int_tuple
+print(my_reduce(my_subtract, int_tuple))
+print()
+
+# работает с разными итерируемыми объектами, вот конкатенация строк
+string = "жаба"
+print(my_reduce(my_add, string))
+print()
+
+# в случае, когда имеется всего один элемент, просто вернёт его, как и reduce из functools
+one_int_list = [23]
+print(my_reduce(my_subtract, one_int_list))
